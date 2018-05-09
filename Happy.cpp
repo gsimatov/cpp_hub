@@ -30,9 +30,7 @@ bool happy_check(int a)
 {
 
 	std::unordered_set<int> Happy = {};
-
 	auto search = Happy.find(a);
-	int flag = 0;
 
 	while (a != 1)
 	{
@@ -42,7 +40,6 @@ bool happy_check(int a)
 		search = Happy.find(a);
 
 		if (search != Happy.end()) {
-			flag = 1;
 			return false;
 		}
 
@@ -59,7 +56,7 @@ int main()
 	ofstream myfile;
 	auto start = std::chrono::high_resolution_clock::now();
 
-	const int range = 100000;
+	const int range = 10;
 	int candidate = 1;
 	int size = 0;
 	std::vector<int> happys;
@@ -82,7 +79,6 @@ int main()
 
 	for (int i = 0; i < range; i++)
 	{
-		//cout << i+1 << ". " << Primes[i] << endl;
 		myfile << happys[i] << "\n";
 	}
 
@@ -91,7 +87,7 @@ int main()
 	std::chrono::duration<double> elapsed = finish - start;
 
 	std::cout << "Elapsed time: " << elapsed.count() << " s\n";
-	cout << "Bok" << endl;
+	cout << "Happy" << endl;
 
 	system("pause");
 	return 0;
