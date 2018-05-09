@@ -14,7 +14,7 @@ using namespace std;
 
 int happy_reduce(int x) 
 {
-	int z,y = 0;
+	int z, y = 0;
 	z = x;
 
 	while (z > 0)
@@ -23,44 +23,75 @@ int happy_reduce(int x)
 		z = z/10;
 	}
 
-		return y;
+	return y;
 }
 
-
-int main()
+bool happy_check(int a)
 {
 
-	int candidate, a, flag = 0;
-	cout << "Insert candidate happy number" << endl;
-	cin >> candidate;
-	a = candidate;
+	std::unordered_set<int> Happy = {};
 
-
-	std::unordered_set<int> Happy ={};
 	auto search = Happy.find(a);
+	int flag = 0;
 
 	while (a != 1)
 	{
 
-		if (search != Happy.end()) {
-			std::cout << "We have a looper: " << (*search) << '\n';
-			flag = 1;
-			break;
-		}
-		else {
-			std::cout << "Nope .. " << a << "  Go fish\n";
-		}
 		Happy.insert(a);
 		a = happy_reduce(a);
 		search = Happy.find(a);
+
+		if (search != Happy.end()) {
+			flag = 1;
+			return false;
+		}
+
 	}
-	
-	if (flag != 1)
+
+		return true;
+
+
+}
+
+int main()
+{
+
+	ofstream myfile;
+	auto start = std::chrono::high_resolution_clock::now();
+
+	const int range = 100000;
+	int candidate = 1;
+	int size = 0;
+	std::vector<int> happys;
+
+	while (size < range) // runs until number of found happy numbers is equal to range
 	{
-		std::cout << candidate << " is a Happy number!" << endl;
+
+		if (happy_check(candidate)==true)
+		{
+			happys.push_back(candidate);
+			size = size + 1;
+		}
+		
+		candidate = candidate + 1;
 	}
 
+	auto finish = std::chrono::high_resolution_clock::now();
 
+	myfile.open("List_of_Happy_numbers.txt");
+
+	for (int i = 0; i < range; i++)
+	{
+		//cout << i+1 << ". " << Primes[i] << endl;
+		myfile << happys[i] << "\n";
+	}
+
+	myfile.close();
+
+	std::chrono::duration<double> elapsed = finish - start;
+
+	std::cout << "Elapsed time: " << elapsed.count() << " s\n";
+	cout << "Bok" << endl;
 
 	system("pause");
 	return 0;
